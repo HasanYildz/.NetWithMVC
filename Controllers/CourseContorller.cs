@@ -1,5 +1,6 @@
-using DotNetAkademi.Models;
+
 using Microsoft.AspNetCore.Mvc;
+using DotNetAkademi.Models;
 
 namespace DotNetAkademi.Controllers
 {
@@ -7,7 +8,8 @@ namespace DotNetAkademi.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var model = Repository.Applications;
+            return View(model);
         }
 
         public IActionResult Apply()
@@ -19,6 +21,17 @@ namespace DotNetAkademi.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Apply([FromForm]Candidate model)
         {
+            if (Repository.Applications.Any(a => a.Email.Equals(model.Email)))
+            {
+                ModelState.AddModelError("", "There is already an application for you");
+            }
+
+
+            if (ModelState.IsValid)
+            {
+                Repository.Add(model);
+                return View("Feedback",model);
+            }
             return View();
         }
     }
