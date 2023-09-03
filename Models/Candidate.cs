@@ -16,7 +16,7 @@ namespace DotNetAkademi.Models
 
         public Candidate()
         {
-            ApplyAt =DateTime.Now;
+            ApplyAt = DateTime.Now;
         }
     }
 
